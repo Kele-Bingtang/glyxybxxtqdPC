@@ -527,8 +527,8 @@
     computed: {
       ...mapGetters(['config']),
       campusImage() {
-        // return process.env.BASE_URL + 'static/image/campus_' + this.params.xq + '.jpg'
-        return 'http://localhost:8090/static/image/campus_0.jpg'
+        return process.env.BASE_URL + 'static/image/campus_' + this.params.xq + '.jpg';
+        // return 'http://localhost:8090/static/image/campus_ '+ this.params.xq +'.jpg'
       },
       xqText() {
         let v = this.campus.filter(v => v.value === this.xq)[0]
@@ -868,7 +868,7 @@
         getBxdDetail(row.id).then(res => {
           if (res.obj.blist) {
             this.dialogVisibleBxd = true
-            this.bxdInfo = res.obj.blist
+            this.bxdInfo = res.obj.blist[0]
           } else {
             this.$message.error('数据异常')
           }

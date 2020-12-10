@@ -38,7 +38,7 @@ export function getBxdDetail(bid) {
     method: 'post',
     data: {
       op: 'selbxdbyadmin',
-      bid
+      bid: bid
     }
   })
 }
