@@ -14,6 +14,7 @@
         <el-form-item class="qrcode-form-item" label-width="0px">
           <div class="qrcode" id="qrcode"></div>
           <div class="qrcode-text">扫码查看维修详情</div>
+          <span>二维码张贴地址：{{ info.ewmdd }}</span>
         </el-form-item>
 
         <!-- 报修单进度 -->
@@ -65,7 +66,7 @@
             <span>{{ info.bxnr }}</span>
           </el-form-item>
           <el-form-item label="报修时间:">
-            <span>{{ info.sbsj.time | dateformat(format) }}</span>
+            <span>{{ info.sbsj | dateformat(format) }}</span>
           </el-form-item>
           <el-form-item label="预约时间:">
             <span>{{ info.yysj }}</span>
@@ -349,7 +350,7 @@
         })
 
         function step1() {
-          const bxsj = me.$moment(me.info.sbsj.time).format(me.format)
+          const bxsj = me.$moment(me.info.sbsj).format(me.format)
           step.steps.push({
             title: '申报中',
             time: bxsj,
@@ -359,8 +360,8 @@
 
         function step2() {
           let desc
-          const tel = me.info.j.sj
           if (me.info.j) {
+            const tel = me.info.j.sj
             desc = tel ? `系统已自动派单给维修师傅<span class="name">${me.info.j.xm}</span>(<a class="tel" href="tel:${tel}">${tel}</a>)，等待处理...`
               : `系统已自动派单给维修师傅<span class="name">${me.info.j.xm}</span>，等待处理...`
           } else {
@@ -368,7 +369,7 @@
           }
           step.steps.push({
             title: '维修中',
-            time: me.$moment(me.info.sbsj.time).format(me.format),
+            time: me.$moment(me.info.sbsj).format(me.format),
             desc: desc
           })
         }
@@ -376,7 +377,7 @@
         function step3() {
           step.steps.push({
             title: '已完成',
-            time: me.info.wxsj ? me.$moment(me.info.wxsj.time).format(me.format) : '--',
+            time: me.info.wxsj ? me.$moment(me.info.wxsj).format(me.format) : '--',
             desc: '维修工作已完成，工单结束.'
           })
         }
@@ -384,7 +385,7 @@
         function step4() {
           step.steps.push({
             title: '已撤回',
-            time: me.info.wxsj ? me.$moment(me.info.wxsj.time).format(me.format) : '--',
+            time: me.info.wxsj ? me.$moment(me.info.wxsj).format(me.format) : '--',
             desc: `申报已撤回，原因：<span class="name">${me.info.cxsy}</span>.`
           })
         }

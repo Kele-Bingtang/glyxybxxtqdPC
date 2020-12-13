@@ -147,7 +147,7 @@
             label="签到时间"
             align="center">
             <template slot-scope="{ row }">
-              <span>{{ row.qdsj.time | dateformat }}</span>
+              <span>{{ row.qdsj | dateformat }}</span>
             </template>
           </el-table-column>
         </el-table>

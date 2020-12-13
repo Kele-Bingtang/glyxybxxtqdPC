@@ -150,6 +150,11 @@
             </div>
           </template>
         </el-table-column>
+<!--        <el-table-column-->
+<!--          prop="ewmdd"-->
+<!--          label="二维码地址"-->
+<!--          align="center"-->
+<!--        >-->
         <el-table-column
           prop="sbr"
           label="申报人"
@@ -360,7 +365,6 @@
           <el-form-item label="维修工时" prop="gs">
             <el-input-number v-model="modifyParams.gs" :precision="2" :step="0.1" :min="0"
                              :disabled="modifyParams.state !== 2"></el-input-number>
-            小时
           </el-form-item>
           <!--工单状态为2（已维修）才有评价，维修中和已撤回应该是没有评价的-->
           <el-form-item label="评价星级" prop="pjvalue">
@@ -586,8 +590,10 @@
        */
       handleDatas(data) {
         data.forEach(item => {
-          item['bxtime'] = this.$moment(item['sbsj'].time).format(this.format)
-          item['timestamp'] = this.$moment(item['sbsj'].time).format('YYYYMMDDHHmmss')
+          item['bxtime'] = this.$moment(item['sbsj']).format(this.format)
+          // console.log("itemTime: ", item['sbsj']);
+
+          item['timestamp'] = this.$moment(item['sbsj']).format('YYYYMMDDHHmmss')
         })
         data.sort((a, b) => {
           return b['timestamp'] - a['timestamp']

@@ -596,7 +596,7 @@
       format(gs) {
         let multiplier = 100
         let sygs = (2 * multiplier - gs * multiplier) / 100 // ×100 防止精度丢失
-        return `${sygs}h`;
+        return `${sygs}`;
       }
     },
     activated() {
