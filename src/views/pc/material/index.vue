@@ -237,7 +237,7 @@
             align="center"
           >
             <template slot-scope="scope">
-              {{$moment(scope.row.sj.time).format(format)}}
+              {{$moment(scope.row.sj).format(format)}}
             </template>
           </el-table-column>
           <el-table-column
