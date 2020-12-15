@@ -4,6 +4,10 @@ import store from './store'
 import router from './router'
 import moment from 'moment'
 
+import './ztree/js/jquery-3.3.1.min'
+import './ztree/js/jquery.ztree.core'
+import './ztree/js/jquery.ztree.excheck'
+import './ztree/js/jquery.ztree.exedit'
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 import '@/styles/index.scss' // global css
 import '@/styles/iconfont/iconfont.css' // iconfont

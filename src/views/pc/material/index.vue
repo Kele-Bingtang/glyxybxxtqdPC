@@ -131,7 +131,8 @@
       <div class="el-dialog-div">
         <el-form :model="params" :rules="rules" ref="ruleForm" label-position="left" label-width="100px">
           <el-form-item label="耗材名称" prop="mc">
-            <el-input v-model="params.mc"></el-input>
+            <el-input v-model="params.mc" id="addhcmc"></el-input>
+            <z-tree></z-tree>
           </el-form-item>
           <el-form-item label="单价(元)" prop="jg">
             <el-input v-model="params.jg"></el-input>
@@ -296,9 +297,10 @@ import config from '@/config'
 import Pagination from '@/components/Pagination' // 分页插件
 import bxdDialog from '@/components/repairDetailDialog' // 报修单详细信息弹框
 import { copyObj } from '@/utils/common'
+import ZTree from "../../../components/ztree/index";
 export default {
   name: 'Material',
-  components: { Pagination, bxdDialog },
+  components: {ZTree, Pagination, bxdDialog },
   data() {
     const validateNumber = (rule, value, callback) => {
       if (!value) {
@@ -314,6 +316,7 @@ export default {
     return {
       loading: false, // 表格数据加载状态
       tableHeight: null, // 表格高度
+      addhc:[],  //添加耗材数据
       hcData: [], // 耗材数据
       hcUsageData: [], // 耗材使用情况表格数据
       searchVal: '', // 查询关键词
@@ -424,6 +427,10 @@ export default {
     addHc() {
       this.dialogVisible = true
       this.resetForm('ruleForm')
+      var treeObj = $.fn.zTree.getZTreeObj("treeDemo")
+      var node = treeObj.getNodes()
+      var nodes = treeObj.transformToArray(node)
+      this.addhc=nodes
     },
     /**
      * 确定添加，传递后台
@@ -573,6 +580,21 @@ export default {
         loading.close()
         this.$message.warning('报修单获取失败，请重新')
       })
+    }
+  },
+  watch: {
+    addhc: {
+      handler: function(newVal, oldVal) {
+        var newName=""
+        for(var i=0;i<newVal.length;i++){
+          newName=newName+"/"+newVal[i].name
+        }
+
+        this.params.mc=newName
+
+        console.log(newName);
+      },
+      deep: true,
     }
   }
 }
