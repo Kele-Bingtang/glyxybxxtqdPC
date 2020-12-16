@@ -130,9 +130,19 @@
     >
       <div class="el-dialog-div">
         <el-form :model="params" :rules="rules" ref="ruleForm" label-position="left" label-width="100px">
+          <el-form-item label="耗材类别" prop="lb">
+            <el-cascader
+              class="cascader-bxlb"
+              placeholder="选择耗材类别"
+              @change="hclbChange"
+              :options="options"
+              filterable
+              clearable
+            ></el-cascader>
+          </el-form-item>
           <el-form-item label="耗材名称" prop="mc">
             <el-input v-model="params.mc" id="addhcmc"></el-input>
-            <z-tree></z-tree>
+<!--            <z-tree></z-tree>-->
           </el-form-item>
           <el-form-item label="单价(元)" prop="jg">
             <el-input v-model="params.jg"></el-input>
@@ -142,6 +152,9 @@
           </el-form-item>-->
           <el-form-item label="单位" prop="dw">
             <el-input v-model="params.dw"></el-input>
+          </el-form-item>
+          <el-form-item label="类型" prop="lx">
+            <el-input v-model="params.lx"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -163,6 +176,16 @@
     >
       <div class="el-dialog-div">
         <el-form :model="paramsUpdate" :rules="rules" ref="ruleForm" label-position="left" label-width="100px">
+          <el-form-item label="耗材类别" prop="lb">
+            <el-cascader
+              class="cascader-bxlb"
+              placeholder="选择耗材类别"
+              @change="hclbUpdate"
+              :options="options"
+              filterable
+              clearable
+            ></el-cascader>
+          </el-form-item>
           <el-form-item label="耗材名称" prop="mc">
             <el-input v-model="paramsUpdate.mc"></el-input>
           </el-form-item>
@@ -174,6 +197,9 @@
           </el-form-item>-->
           <el-form-item label="单位" prop="dw">
             <el-input v-model="paramsUpdate.dw"></el-input>
+          </el-form-item>
+          <el-form-item label="类型" prop="lx">
+            <el-input v-model="paramsUpdate.lx"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -297,10 +323,10 @@ import config from '@/config'
 import Pagination from '@/components/Pagination' // 分页插件
 import bxdDialog from '@/components/repairDetailDialog' // 报修单详细信息弹框
 import { copyObj } from '@/utils/common'
-import ZTree from "../../../components/ztree/index";
+// import ZTree from "../../../components/ztree/index";
 export default {
   name: 'Material',
-  components: {ZTree, Pagination, bxdDialog },
+  components: { Pagination, bxdDialog },
   data() {
     const validateNumber = (rule, value, callback) => {
       if (!value) {
@@ -314,6 +340,46 @@ export default {
       }
     }
     return {
+      options: [{
+        value: '1',
+        label: '物业维修',
+        children: [{
+          value: '1',
+          label: '家具',
+        }, {
+          value: '2',
+          label: '腻子',
+        }]
+      }, {
+        value: '2',
+        label: '水电维修',
+        children: [{
+          value: '1',
+          label: '水龙头',
+        }, {
+          value: '2',
+          label: '阀门',
+        }, {
+          value: '3',
+          label: '冲水阀',
+        }, {
+          value: '4',
+          label: '管道',
+        }]
+      }, {
+        value: '3',
+        label: '热水维修',
+        children: [{
+          value: '1',
+          label: '无热水'
+        }, {
+          value: '2',
+          label: '热水水流小'
+        }, {
+          value: '3',
+          label: '热水温度低'
+        }]
+      }],
       loading: false, // 表格数据加载状态
       tableHeight: null, // 表格高度
       addhc:[],  //添加耗材数据
@@ -331,6 +397,8 @@ export default {
       bxdInfo: {}, // 点击使用情况弹框 -> 点击查看当前报修单详情
       hcTableHeight: null, // 耗材使用情况表格高度
       params: { // 参数
+        lb:'',//耗材类别
+        lx:'',//耗材类型
         op: 'newhc', // 固定参数
         mc: '', // 名称
         jg: null, // 价格（前台判断，必须是数字，可以是浮点数）
@@ -338,6 +406,8 @@ export default {
         dw: '' // 单位
       },
       paramsUpdate: { // 参数
+        lb:'',//耗材类别
+        lx:'',//耗材类型
         op: 'uphc', // 固定参数
         id: '',
         mc: '', // 名称
@@ -349,6 +419,7 @@ export default {
         id: ''
       },
       rules: {
+        lb: { required: true, message: '请选择耗材类别', trigger: ['blur', 'change'] },
         mc: { required: true, message: '请填写名称', trigger: ['blur', 'change'] },
         jg: [
           { required: true, message: '请填写单价', trigger: ['blur', 'change'] },
@@ -404,6 +475,22 @@ export default {
     this.getHcList()
   },
   methods: {
+    //添加耗材
+    hclbChange(currentVal){
+      if (currentVal.length == 0) {
+        this.params.lb = '';
+      } else {
+        this.params.lb = currentVal[0]+'-'+currentVal[1];
+      }
+    },
+    //修改耗材
+    hclbUpdate(currentVal){
+      if (currentVal.length == 0) {
+        this.paramsUpdate.lb = '';
+      } else {
+        this.paramsUpdate.lb = currentVal[0]+'-'+currentVal[1];
+      }
+    },
     /**
      * 获取耗材
      */
@@ -503,6 +590,8 @@ export default {
       this.paramsUpdate.mc = row.mc
       this.paramsUpdate.jg = row.jg
       this.paramsUpdate.dw = row.dw
+      this.paramsUpdate.lx = row.lx
+      this.paramsUpdate.lb = row.lb
     },
     hcUDelete(row) {
       this.paramsDelete.id = row.id
@@ -646,6 +735,9 @@ export default {
   }
 </style>
 <style lang="scss" scoped>
+  .cascader-bxlb{
+    width: 100%;
+  }
   .main {
     width: 100%;
     height: 100%;
