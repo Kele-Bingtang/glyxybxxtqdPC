@@ -153,7 +153,7 @@
           <el-form-item label="单位" prop="dw">
             <el-input v-model="params.dw"></el-input>
           </el-form-item>
-          <el-form-item label="类型" prop="lx">
+          <el-form-item label="型号" prop="lx">
             <el-input v-model="params.lx"></el-input>
           </el-form-item>
         </el-form>
@@ -198,7 +198,7 @@
           <el-form-item label="单位" prop="dw">
             <el-input v-model="paramsUpdate.dw"></el-input>
           </el-form-item>
-          <el-form-item label="类型" prop="lx">
+          <el-form-item label="型号" prop="lx">
             <el-input v-model="paramsUpdate.lx"></el-input>
           </el-form-item>
         </el-form>
@@ -317,6 +317,7 @@
 </template>
 
 <script>
+import {DictListServlet} from '@/api/Dict'
 import { BxdServlet } from '@/api/bxd'
 import { HcServlet } from '@/api/HcServlet'
 import config from '@/config'
@@ -340,46 +341,7 @@ export default {
       }
     }
     return {
-      options: [{
-        value: '1',
-        label: '物业维修',
-        children: [{
-          value: '1',
-          label: '家具',
-        }, {
-          value: '2',
-          label: '腻子',
-        }]
-      }, {
-        value: '2',
-        label: '水电维修',
-        children: [{
-          value: '1',
-          label: '水龙头',
-        }, {
-          value: '2',
-          label: '阀门',
-        }, {
-          value: '3',
-          label: '冲水阀',
-        }, {
-          value: '4',
-          label: '管道',
-        }]
-      }, {
-        value: '3',
-        label: '热水维修',
-        children: [{
-          value: '1',
-          label: '无热水'
-        }, {
-          value: '2',
-          label: '热水水流小'
-        }, {
-          value: '3',
-          label: '热水温度低'
-        }]
-      }],
+      options: [],
       loading: false, // 表格数据加载状态
       tableHeight: null, // 表格高度
       addhc:[],  //添加耗材数据
@@ -473,8 +435,17 @@ export default {
   mounted() {
     this.tableHeight = this.$refs['main-content'].offsetHeight
     this.getHcList()
+    this.initDict();
   },
   methods: {
+    //初始化耗材类别
+    initDict(){
+      DictListServlet().then(response => {
+        this.options = response.obj;
+      }).catch(() => {
+        this.$message.error('查询耗材类别出错')
+      })
+    },
     //添加耗材
     hclbChange(currentVal){
       if (currentVal.length == 0) {

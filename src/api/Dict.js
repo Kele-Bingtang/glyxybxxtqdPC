@@ -12,3 +12,11 @@ export function Dict(data) {
     data
   })
 }
+
+//报修类别、耗材类别、接单人业务范围
+export function DictListServlet() {
+  return request({
+    url: '/dict/getAllWxlb',
+    method: 'get',
+  })
+}

@@ -222,6 +222,7 @@
 </template>
 
 <script>
+  import {DictListServlet} from '@/api/Dict'
   import { getJdr, updateJdr } from '@/api/jdr'
   import { JdrServlet } from '@/api/JdrServlet'
   import { getArea, getDeclare } from '@/api/bxd'
@@ -235,46 +236,7 @@
     components: { Pagination, MyProgress },
     data() {
       return {
-        options: [{
-          value: '1',
-          label: '物业维修',
-          children: [{
-            value: '1',
-            label: '家具',
-          }, {
-            value: '2',
-            label: '腻子',
-          }]
-        }, {
-          value: '2',
-          label: '水电维修',
-          children: [{
-            value: '1',
-            label: '水龙头',
-          }, {
-            value: '2',
-            label: '阀门',
-          }, {
-            value: '3',
-            label: '冲水阀',
-          }, {
-            value: '4',
-            label: '管道',
-          }]
-        }, {
-          value: '3',
-          label: '热水维修',
-          children: [{
-            value: '1',
-            label: '无热水'
-          }, {
-            value: '2',
-            label: '热水水流小'
-          }, {
-            value: '3',
-            label: '热水温度低'
-          }]
-        }],
+        options: [],
         switchAutoMonior: true, // 自动监控
         timer: null, // 定时器
 
@@ -371,8 +333,17 @@
       this.getJdrList()
       this.getYwfw()
       this.autoMonitor()
+      this.initDict()
     },
     methods: {
+      //初始化接单人业务范围
+      initDict(){
+        DictListServlet().then(response => {
+          this.options = response.obj;
+        }).catch(() => {
+          this.$message.error('查询接单人业务范围出错')
+        })
+      },
       /**
        * 自动监控，每隔n秒刷新一次数据
        */
