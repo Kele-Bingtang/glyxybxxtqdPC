@@ -153,8 +153,8 @@
           <el-form-item label="单位" prop="dw">
             <el-input v-model="params.dw"></el-input>
           </el-form-item>
-          <el-form-item label="型号" prop="lx">
-            <el-input v-model="params.lx"></el-input>
+          <el-form-item label="型号" prop="xh">
+            <el-input v-model="params.xh"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -178,6 +178,7 @@
         <el-form :model="paramsUpdate" :rules="rules" ref="ruleForm" label-position="left" label-width="100px">
           <el-form-item label="耗材类别" prop="lb">
             <el-cascader
+              v-model="hclbval"
               class="cascader-bxlb"
               placeholder="选择耗材类别"
               @change="hclbUpdate"
@@ -198,8 +199,8 @@
           <el-form-item label="单位" prop="dw">
             <el-input v-model="paramsUpdate.dw"></el-input>
           </el-form-item>
-          <el-form-item label="型号" prop="lx">
-            <el-input v-model="paramsUpdate.lx"></el-input>
+          <el-form-item label="型号" prop="xh">
+            <el-input v-model="paramsUpdate.xh"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -341,6 +342,7 @@ export default {
       }
     }
     return {
+      hclbval:[],//耗材类别
       options: [],
       loading: false, // 表格数据加载状态
       tableHeight: null, // 表格高度
@@ -360,7 +362,7 @@ export default {
       hcTableHeight: null, // 耗材使用情况表格高度
       params: { // 参数
         lb:'',//耗材类别
-        lx:'',//耗材类型
+        xh:'',//耗材型号
         op: 'newhc', // 固定参数
         mc: '', // 名称
         jg: null, // 价格（前台判断，必须是数字，可以是浮点数）
@@ -369,7 +371,7 @@ export default {
       },
       paramsUpdate: { // 参数
         lb:'',//耗材类别
-        lx:'',//耗材类型
+        xh:'',//耗材型号
         op: 'uphc', // 固定参数
         id: '',
         mc: '', // 名称
@@ -561,8 +563,9 @@ export default {
       this.paramsUpdate.mc = row.mc
       this.paramsUpdate.jg = row.jg
       this.paramsUpdate.dw = row.dw
-      this.paramsUpdate.lx = row.lx
+      this.paramsUpdate.xh = row.xh
       this.paramsUpdate.lb = row.lb
+      this.hclbval = this.paramsUpdate.lb.split(',')
     },
     hcUDelete(row) {
       this.paramsDelete.id = row.id
