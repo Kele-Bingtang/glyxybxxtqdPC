@@ -151,18 +151,40 @@
             <el-input v-model="params.gh" placeholder="请填写工号"></el-input>
           </el-form-item>
           <el-form-item label="业务范围" prop="ywfw" class="ywfw">
-            <div v-for="(item, index) in ywfw" :key="index" class="ywfw-select">
-              <span>{{item.text}}</span>
-              <el-select v-model="item.model" multiple collapse-tags placeholder="请选择区域"
-                         @change="handleYwfwSelect">
-                <el-option
-                  v-for="item in item.select"
-                  :key="item.id"
-                  :label="item.qy"
-                  :value="item.id">
-                </el-option>
-              </el-select>
+            <div class="ywfw-select">
+              <span>临桂校区</span>
+              <el-cascader
+                class="cascader-bxlb"
+                placeholder="选择业务范围"
+                @change="ywfwLgChange"
+                :options="options"
+                clearable
+                :props="{ multiple: true }"
+              ></el-cascader>
             </div>
+            <div class="ywfw-select">
+              <span>临桂校区</span>
+              <el-cascader
+                class="cascader-bxlb"
+                placeholder="选择业务范围"
+                @change="ywfwDcChange"
+                :options="options"
+                clearable
+                :props="{ multiple: true }"
+              ></el-cascader>
+            </div>
+<!--            <div v-for="(item, index) in ywfw" :key="index" class="ywfw-select">-->
+<!--              <span>{{item.text}}</span>-->
+<!--              <el-select v-model="item.model" multiple collapse-tags placeholder="请选择区域"-->
+<!--                         @change="handleYwfwSelect">-->
+<!--                <el-option-->
+<!--                  v-for="item in item.select"-->
+<!--                  :key="item.id"-->
+<!--                  :label="item.qy"-->
+<!--                  :value="item.id">-->
+<!--                </el-option>-->
+<!--              </el-select>-->
+<!--            </div>-->
           </el-form-item>
           <el-form-item label="手机号码" prop="sj">
             <el-input v-model="params.sj" placeholder="请填写手机号码"></el-input>
@@ -213,6 +235,46 @@
     components: { Pagination, MyProgress },
     data() {
       return {
+        options: [{
+          value: '1',
+          label: '物业维修',
+          children: [{
+            value: '1',
+            label: '家具',
+          }, {
+            value: '2',
+            label: '腻子',
+          }]
+        }, {
+          value: '2',
+          label: '水电维修',
+          children: [{
+            value: '1',
+            label: '水龙头',
+          }, {
+            value: '2',
+            label: '阀门',
+          }, {
+            value: '3',
+            label: '冲水阀',
+          }, {
+            value: '4',
+            label: '管道',
+          }]
+        }, {
+          value: '3',
+          label: '热水维修',
+          children: [{
+            value: '1',
+            label: '无热水'
+          }, {
+            value: '2',
+            label: '热水水流小'
+          }, {
+            value: '3',
+            label: '热水温度低'
+          }]
+        }],
         switchAutoMonior: true, // 自动监控
         timer: null, // 定时器
 
@@ -572,27 +634,64 @@
         this.dialogVisible = false
         this.$router.push('/repair')
       },
-      /**
-       * 业务范围选择事监听
-       * @param val
-       */
-      handleYwfwSelect() {
+
+      //业务范围多选监听（新）
+      ywfwLgChange(currentVal){
+        for (let i = 0; i < currentVal.length; i++) {
+          let ywfwValue = currentVal[i][0]+'-'+currentVal[i][1];
+          this.ywfw[0].model.push(ywfwValue);
+        }
         let arr = []
         let ywfw
         this.ywfw.map(v => {
           arr = arr.concat(v.model)
         })
         if (arr.length > 0) {
-          // ywfw = 0
-          // arr.map(v => {
-          //   ywfw += Math.pow(2, v - 1)
-          // })
           ywfw = arr.join('|')
         } else {
           ywfw = null
         }
         this.params.ywfw = ywfw
       },
+      ywfwDcChange(currentVal){
+        for (let i = 0; i < currentVal.length; i++) {
+          let ywfwValue = currentVal[i][0]+'-'+currentVal[i][1];
+          this.ywfw[1].model.push(ywfwValue);
+        }
+        console.log(this.ywfw[1].model);
+        let arr = []
+        let ywfw
+        this.ywfw.map(v => {
+          arr = arr.concat(v.model)
+        })
+        if (arr.length > 0) {
+          ywfw = arr.join('|')
+        } else {
+          ywfw = null
+        }
+        this.params.ywfw = ywfw
+      },
+      /**
+       * 业务范围选择事监听
+       * @param val
+       */
+      // handleYwfwSelect() {
+      //   let arr = []
+      //   let ywfw
+      //   this.ywfw.map(v => {
+      //     arr = arr.concat(v.model)
+      //   })
+      //   if (arr.length > 0) {
+      //     // ywfw = 0
+      //     // arr.map(v => {
+      //     //   ywfw += Math.pow(2, v - 1)
+      //     // })
+      //     ywfw = arr.join('|')
+      //   } else {
+      //     ywfw = null
+      //   }
+      //   this.params.ywfw = ywfw
+      // },
       format(gs) {
         let multiplier = 100
         let sygs = (2 * multiplier - gs * multiplier) / 100 // ×100 防止精度丢失
