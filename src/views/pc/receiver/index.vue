@@ -152,8 +152,9 @@
           </el-form-item>
           <el-form-item label="业务范围" prop="ywfw" class="ywfw">
             <div class="ywfw-select">
-              <span>临桂校区</span>
+<!--              <span>临桂校区</span>-->
               <el-cascader
+                v-model="ywval"
                 class="cascader-bxlb"
                 placeholder="选择业务范围"
                 @change="ywfwLgChange"
@@ -162,17 +163,17 @@
                 :props="{ multiple: true }"
               ></el-cascader>
             </div>
-            <div class="ywfw-select">
-              <span>临桂校区</span>
-              <el-cascader
-                class="cascader-bxlb"
-                placeholder="选择业务范围"
-                @change="ywfwDcChange"
-                :options="options"
-                clearable
-                :props="{ multiple: true }"
-              ></el-cascader>
-            </div>
+<!--            <div class="ywfw-select">-->
+<!--              <span>临桂校区</span>-->
+<!--              <el-cascader-->
+<!--                class="cascader-bxlb"-->
+<!--                placeholder="选择业务范围"-->
+<!--                @change="ywfwDcChange"-->
+<!--                :options="options"-->
+<!--                clearable-->
+<!--                :props="{ multiple: true }"-->
+<!--              ></el-cascader>-->
+<!--            </div>-->
 <!--            <div v-for="(item, index) in ywfw" :key="index" class="ywfw-select">-->
 <!--              <span>{{item.text}}</span>-->
 <!--              <el-select v-model="item.model" multiple collapse-tags placeholder="请选择区域"-->
@@ -236,6 +237,7 @@
     components: { Pagination, MyProgress },
     data() {
       return {
+        ywval:[],//业务范围的value
         options: [],
         switchAutoMonior: true, // 自动监控
         timer: null, // 定时器
@@ -461,6 +463,19 @@
         this.$nextTick(() => {
           this.resetForm('ruleForm')
           this.params = copyObj(row)
+          //回显业务范围
+          let str = this.params.ywfw;
+          let arr1 =  str.split('|');
+          let arr2 = new Array(arr1.length)
+          for (let i = 0; i < arr1.length; i++) {
+            let temp = new Array(2);
+            temp = arr1[i].split("-");
+            arr2[i] = new Array(temp.length);
+            for (let j = 0; j < temp.length; j++) {
+              arr2[i][j] = temp[j];//完成字符串转换为二维数组
+            }
+          }
+          this.ywval = arr2;
           this.params['jid'] = row.ybid // 替换接单人id字段
           this.params.state = Number(row.state) // 转数字类型
           this.params.ybid = '' // 置空ybid字段
@@ -608,6 +623,12 @@
 
       //业务范围多选监听（新）
       ywfwLgChange(currentVal){
+        console.log("==============================")
+        console.log(this.ywval)
+        for (let i = 0; i < this.ywval.length; i++) {
+          let ywfwValue = this.ywval[i][0]+'-'+this.ywval[i][1];
+          console.log(ywfwValue)
+        }
         for (let i = 0; i < currentVal.length; i++) {
           let ywfwValue = currentVal[i][0]+'-'+currentVal[i][1];
           this.ywfw[0].model.push(ywfwValue);
@@ -624,24 +645,24 @@
         }
         this.params.ywfw = ywfw
       },
-      ywfwDcChange(currentVal){
-        for (let i = 0; i < currentVal.length; i++) {
-          let ywfwValue = currentVal[i][0]+'-'+currentVal[i][1];
-          this.ywfw[1].model.push(ywfwValue);
-        }
-        console.log(this.ywfw[1].model);
-        let arr = []
-        let ywfw
-        this.ywfw.map(v => {
-          arr = arr.concat(v.model)
-        })
-        if (arr.length > 0) {
-          ywfw = arr.join('|')
-        } else {
-          ywfw = null
-        }
-        this.params.ywfw = ywfw
-      },
+      // ywfwDcChange(currentVal){
+      //   for (let i = 0; i < currentVal.length; i++) {
+      //     let ywfwValue = currentVal[i][0]+'-'+currentVal[i][1];
+      //     this.ywfw[1].model.push(ywfwValue);
+      //   }
+      //   console.log(this.ywfw[1].model);
+      //   let arr = []
+      //   let ywfw
+      //   this.ywfw.map(v => {
+      //     arr = arr.concat(v.model)
+      //   })
+      //   if (arr.length > 0) {
+      //     ywfw = arr.join('|')
+      //   } else {
+      //     ywfw = null
+      //   }
+      //   this.params.ywfw = ywfw
+      // },
       /**
        * 业务范围选择事监听
        * @param val
