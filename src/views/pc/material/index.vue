@@ -35,6 +35,12 @@
           align="center"
         >
         </el-table-column>
+        <el-table-column
+          prop="xh"
+          label="型号"
+          align="center"
+        >
+        </el-table-column>
         <!--<el-table-column
           prop="id"
           label="编号"
@@ -565,7 +571,7 @@ export default {
       this.paramsUpdate.dw = row.dw
       this.paramsUpdate.xh = row.xh
       this.paramsUpdate.lb = row.lb
-      this.hclbval = this.paramsUpdate.lb.split(',')
+      this.hclbval = this.paramsUpdate.lb.split('-')
     },
     hcUDelete(row) {
       this.paramsDelete.id = row.id
