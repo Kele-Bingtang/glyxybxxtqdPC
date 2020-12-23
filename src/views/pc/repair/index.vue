@@ -145,7 +145,7 @@
         >
           <template slot-scope="scope">
             <div class="left">
-              <!--<el-tag v-if="scope.row.qy" type="warning" size="small">{{scope.row.qy}}</el-tag>-->
+              <el-tag v-if="scope.row.qy" type="warning" size="small">{{scope.row.qy}}</el-tag>
               <span>{{scope.row.xxdd}}</span>
             </div>
           </template>
@@ -172,7 +172,8 @@
           align="center"
         >
           <template slot-scope="scope">
-            <el-tag :type="getState(progress, scope.row.state).tag">{{getState(progress, scope.row.state).text}}
+            <el-tag :type="getState(progress,scope.row.state).tag">
+            {{getState(progress,scope.row.state).text}}
             </el-tag>
           </template>
         </el-table-column>
@@ -416,7 +417,7 @@
 
         // 报修单参数
         params: {
-          op: 'selbxdbyadmin', // 调用方法*，固定值
+          op: 'selbxdbyadminpc', // 调用方法*，固定值
           bid: null, // 报修单号，无则传递null，即不填参数即可，不传空字符串“”了，下同。不查询时不用传递任何信息。
           startime: null, // 日期查询开始时间 时间格式：yyyy-mm-dd
           endtime: null, // 日期查询结束时间 时间格式：yyyy-mm-dd

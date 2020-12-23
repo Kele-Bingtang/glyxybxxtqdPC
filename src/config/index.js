@@ -22,7 +22,8 @@ export default {
     { text: '未派单', value: 0, tag: 'danger' },
     { text: '已派单', value: 1, tag: 'primary' },
     { text: '已维修', value: 2, tag: 'success' },
-    { text: '撤销单', value: 3, tag: 'info' }
+    { text: '撤销单', value: 3, tag: 'info' },
+    { text: '验收单', value: 4, tag: 'success' }
   ],
   // 校区
   campus: [
