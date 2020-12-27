@@ -17,15 +17,15 @@ import '@/permission' // permission control
 
 // Import UI
 import '@/ui/element-ui'
-// import ECharts from 'vue-echarts/dist/vue-echarts' // 在 webpack 环境下指向 components/ECharts.vue
-// // 手动引入 ECharts 各模块来减小打包体积
-// import 'echarts/lib/chart/bar'
-// import 'echarts/lib/chart/pie'
-// import 'echarts/lib/component/tooltip'
-// require('echarts/theme/macarons') // echarts theme
-//
-// // 注册组件后即可使用
-// Vue.component('v-chart', ECharts)
+import ECharts from 'vue-echarts/dist/vue-echarts' // 在 webpack 环境下指向 components/ECharts.vue
+// 手动引入 ECharts 各模块来减小打包体积
+import 'echarts/lib/chart/bar'
+import 'echarts/lib/chart/pie'
+import 'echarts/lib/component/tooltip'
+require('echarts/theme/macarons') // echarts theme
+
+// 注册组件后即可使用
+Vue.component('v-chart', ECharts)
 
 // Animate.css
 import animated from 'animate.css'
