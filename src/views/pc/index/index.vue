@@ -204,26 +204,15 @@
       getDatasSucc(data) {
         this.data = data
         let pieSeries = this.pieOptions.series.data
-        // pieSeries.map(v => {
-        //   v.value = data[v.id]
-        // })
-        pieSeries[0].value = this.data.pj1;
-        pieSeries[1].value = this.data.pj2;
-        pieSeries[2].value = this.data.pj3;
-        pieSeries[3].value = this.data.pj4;
-        pieSeries[4].value = this.data.pj5;
+        pieSeries.map(v => {
+          v.value = data[v.id]
+        })
 
         let barSeries = this.barOptions.series.data
         let tjjson = JSON.parse(this.data.tj);
-        barSeries[0].value = tjjson.yearbx;
-        barSeries[1].value = tjjson.yearwx;
-        barSeries[2].value = tjjson.monthbx;
-        barSeries[3].value = tjjson.monthwx;
-        barSeries[4].value = tjjson.daybx;
-        barSeries[5].value = tjjson.daywx;
-        // barSeries.map(v => {
-        //   v.value = data[v.id]
-        // })
+        barSeries.map(v => {
+          v.value = tjjson[v.id]
+        })
       },
       /**
        * 自动监控，每隔n秒刷新一次数据
