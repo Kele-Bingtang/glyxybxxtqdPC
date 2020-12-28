@@ -358,20 +358,20 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <!--工单状态为2（已维修）-->
+          <!--工单状态为4（已验收）-->
           <el-form-item label="耗材使用" prop="hc">
-            <el-input type="textarea" v-model="modifyParams.hc" :disabled="modifyParams.state !== 2"></el-input>
+            <el-input type="textarea" v-model="modifyParams.hc" :disabled="modifyParams.state !== 4 || modifyParams.state !== 2"></el-input>
           </el-form-item>
-          <!--工单状态为2（已维修）-->
+          <!--工单状态为2（已验收）-->
           <el-form-item label="维修工时" prop="gs">
             <el-input-number v-model="modifyParams.gs" :precision="2" :step="0.1" :min="0"
-                             :disabled="modifyParams.state !== 2"></el-input-number>
+                             :disabled="modifyParams.state !== 4"></el-input-number>
           </el-form-item>
-          <!--工单状态为2（已维修）才有评价，维修中和已撤回应该是没有评价的-->
+          <!--工单状态为4（已验收）才有评价，维修中和已撤回应该是没有评价的-->
           <el-form-item label="评价星级" prop="pjvalue">
             <el-rate
               v-model="modifyParams.pjvalue"
-              :disabled="modifyParams.state !== 2"
+              :disabled="modifyParams.state !== 4 || modifyParams.state !== 2"
               show-text
               :max="evaluate.length"
               :texts="evaluate"
@@ -380,9 +380,9 @@
             >
             </el-rate>
           </el-form-item>
-          <!--工单状态为2（已维修）才有评价，维修中和已撤回应该是没有评价的-->
+          <!--工单状态为4（已验收）才有评价，维修中和已撤回应该是没有评价的-->
           <el-form-item label="评价内容" prop="pjnr">
-            <el-input type="textarea" v-model="modifyParams.pjnr" :disabled="modifyParams.state !== 2"></el-input>
+            <el-input type="textarea" v-model="modifyParams.pjnr" :disabled="modifyParams.state !== 4 "></el-input>
           </el-form-item>
 
 

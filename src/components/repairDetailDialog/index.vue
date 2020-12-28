@@ -34,7 +34,7 @@
               v-for="(item, index) of info.step.steps"
               :key="index"
             >
-              <div slot="title" class="title">{{item.title}}</div>
+              <div slot="title" class="title" v-html="item.title"></div>
               <div slot="description">
                 <div class="date">{{item.time}}</div>
                 <div class="desc" v-html="item.desc"></div>
@@ -120,7 +120,7 @@
             <span>{{ info.j && info.j.yx }}</span>
           </el-form-item>
           <el-form-item label="服务星级:">
-            <template v-if="info.state === 2">
+            <template v-if="info.state === 2 || info.state === 4">
               <el-rate
                   v-if="info.j && info.pj"
                   v-model="info.pj"
@@ -133,7 +133,7 @@
             </template>
           </el-form-item>
           <el-form-item label="服务评价:" class="evaluate-form-item">
-            <template v-if="info.state === 2">
+            <template v-if="info.state === 2 || info.state === 4">
               <span v-if="info.j && info.pj && info.pjnr">{{info.pjnr}}</span>
               <span v-else-if="info.j && info.pj && !info.pjnr">无</span>
               <span v-else-if="info.j && !info.pj && !info.pjnr">暂未评价</span>
@@ -329,10 +329,9 @@
           step1()
           step2()
         } else if (state === 2) { // 已维修
-          step.active = 2
+          step.active = 1
           step1()
           step2()
-          step3()
         } else if (state === 3) { // 撤销单
           if (this.info.j) { // 有接单人信息，说明已经派单，此时撤回属于第3步
             step.active = 2
@@ -344,6 +343,15 @@
             step1()
             step4()
           }
+        }else if (state === 4){ //验收通过单
+            step.active = 4;
+            step1();
+            step2();
+            step3();
+        }else if (state === 5){ // 验收未通过
+          step.active = 1;
+          step1();
+          step2();
         }
         this.info = Object.assign({}, this.info, {
           step: step
@@ -359,16 +367,24 @@
         }
 
         function step2() {
-          let desc
+          let desc;
+          let title = '维修中';
           if (me.info.j) {
             const tel = me.info.j.sj
             desc = tel ? `系统已自动派单给维修师傅<span class="name">${me.info.j.xm}</span>(<a class="tel" href="tel:${tel}">${tel}</a>)，等待处理...`
               : `系统已自动派单给维修师傅<span class="name">${me.info.j.xm}</span>，等待处理...`
+            if(me.bxdInfo.state == 2 || me.bxdInfo.state == 4) {
+              desc = '当前订单已完成修理，等待验收...';
+              title = '已维修';
+            }else if(me.bxdInfo.state == 5){
+              desc = '当前订单已完成修理，但验收未通过。';
+              title = `<span style="color: red">未通过</span>`;
+            }
           } else {
             desc = '等待管理员指派维修师傅，请耐心等待...'
           }
           step.steps.push({
-            title: '维修中',
+            title: title,
             time: me.$moment(me.info.sbsj).format(me.format),
             desc: desc
           })
