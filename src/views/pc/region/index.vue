@@ -36,10 +36,11 @@
       </el-button>
     </div>
 
-    <div class="main-content" ref="mainContent" @mousewheel="onMousewheel($event)">
-      <div style="position: relative;width: 100%;height: 33rem;">
+    <div class="main-content" ref="mainContent" @mousewheel="onMousewheel($event)" style="height: 100%">
+      <div style="position: relative;width: 100%;height: 100%;">
         <div class="image-tips">
-          <el-tag type="primary" style="margin-left: 15px;">
+          <!--<el-tag type="primary" style="margin-left: 15px;">-->
+          <el-tag type="primary">
             *提示：图片区域范围内鼠标右键新建区域
           </el-tag>
         </div>
@@ -56,7 +57,7 @@
               :key="campusImage"
               style="width: 100%; height: 100%;"
               :src="campusImage"
-              fit="cover"></el-image>
+              fit="scale-down"></el-image>
         </div>
 <!--        <div class="image-mark-copy" ref="imageMarkCopy"></div>-->
         <div class="image-mark" ref="imageMark" @contextmenu="onContextmenu">
