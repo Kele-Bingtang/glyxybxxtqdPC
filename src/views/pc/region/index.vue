@@ -410,6 +410,7 @@
   import Pagination from '@/components/Pagination'
   import { component as VueContextMenu } from '@xunlei/vue-context-menu'
   import { mapGetters } from 'vuex'
+  import store from "../../../store";
 
   export default {
     name: 'Region', // 区域管理
@@ -446,7 +447,7 @@
     },
     data() {
       return {
-        switchAutoMonior: false, // 自动监控
+        switchAutoMonior: true, // 自动监控
         timer: null, // 定时器
 
         campus: config.campus, // 校区
