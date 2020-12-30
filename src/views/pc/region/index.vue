@@ -57,7 +57,7 @@
               :key="campusImage"
               style="width: 100%; height: 100%;"
               :src="campusImage"
-              fit="scale-down"></el-image>
+              fit="contain"></el-image>
         </div>
 <!--        <div class="image-mark-copy" ref="imageMarkCopy"></div>-->
         <div class="image-mark" ref="imageMark" @contextmenu="onContextmenu">
