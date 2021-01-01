@@ -71,9 +71,11 @@
           <el-form-item label="预约时间:">
             <span>{{ info.yysj }}</span>
           </el-form-item>
-          <el-form-item label="耗材:">
-            <span>{{ info.hc }}</span>
+          <br>
+          <el-form-item label="耗材:" class="hc-item-style">
+            <p class="hcStyle" v-bind:key="i" v-if="info.hc != '' " v-for="(item, i) in info.hc.trim().split(',')" style="margin-top: -3px">{{i+1}}、{{item}}</p>
           </el-form-item>
+          <br>
           <el-form-item label="工时:">
             <span>{{ info.gs }}</span>
           </el-form-item>
@@ -605,10 +607,21 @@
             text-align: left;
             padding-left: 40px;
           }
+
+          .hcStyle {
+            border-bottom: 1px solid #99a9bf;
+          }
+          .hc-item-style {
+            .el-form-item__content {
+              width: 520px; //848px;
+            }
+          }
         }
       }
     }
   }
+
+
 
   .image-dialog {
     .el-dialog {
