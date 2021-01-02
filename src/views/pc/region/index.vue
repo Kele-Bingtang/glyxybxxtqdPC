@@ -52,7 +52,7 @@
         <div class="image-mask" @mousedown="onMouseDown" @mouseup="onMouseUp">
           <el-button type="primary" round size="small" icon="el-icon-view">遮罩</el-button>
         </div>
-        <div class="image-wrapper" ref="imageWrapper">
+        <div class="image-wrapper" ref="imageWrapper" style="width: 100%; height: 100%;">
           <el-image
               :key="campusImage"
               style="width: 100%; height: 100%;"
