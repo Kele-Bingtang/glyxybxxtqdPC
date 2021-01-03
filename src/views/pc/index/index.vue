@@ -74,14 +74,14 @@
             name: '维修单评价统计',
             type: 'pie',
             roseType: 'radius',
-            radius: ['30%', '85%'],
+            radius: ['30%', '75%'],
             center: ['50%', '40%'],
             data: [
-              { value: 0, name: '1星', id: 'pj1' },
-              { value: 0, name: '2星', id: 'pj2' },
-              { value: 0, name: '3星', id: 'pj3' },
-              { value: 0, name: '4星', id: 'pj4' },
-              { value: 0, name: '5星', id: 'pj5' }
+              { value: 1, name: '1星', id: 'pj1' },
+              { value: 1, name: '2星', id: 'pj2' },
+              { value: 1, name: '3星', id: 'pj3' },
+              { value: 1, name: '4星', id: 'pj4' },
+              { value: 1, name: '5星', id: 'pj5' }
             ],
             label: {
               formatter: '{b} : {c} ({d}%)'
@@ -131,7 +131,7 @@
               {
                 id: 'yearbx', // id为接口对应字段
                 name: '本年报修量',
-                value: 200,
+                value: 0,
                 itemStyle: {
                   color: '#FBD437'
                 }
@@ -139,7 +139,7 @@
               {
                 id: 'yearwx',
                 name: '本年完成量',
-                value: 200,
+                value: 0,
                 itemStyle: {
                   color: '#FBD437'
                 }
@@ -147,7 +147,7 @@
               {
                 id: 'monthbx',
                 name: '本月报修量',
-                value: 120,
+                value: 0,
                 itemStyle: {
                   color: '#B6A2DE'
                 }
@@ -155,7 +155,7 @@
               {
                 id: 'monthwx',
                 name: '本月完成量',
-                value: 99,
+                value: 0,
                 itemStyle: {
                   color: '#B6A2DE'
                 }
@@ -163,7 +163,7 @@
               {
                 id: 'daybx',
                 name: '今日报修量',
-                value: 50,
+                value: 0,
                 itemStyle: {
                   color: '#4ECB73'
                 }
@@ -171,7 +171,7 @@
               {
                 id: 'daywx',
                 name: '今日完成量',
-                value: 10,
+                value: 0,
                 itemStyle: {
                   color: '#4ECB73'
                 }

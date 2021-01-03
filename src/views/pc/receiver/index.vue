@@ -623,12 +623,7 @@
 
       //业务范围多选监听（新）
       ywfwLgChange(currentVal){
-        console.log("==============================")
-        console.log(this.ywval)
-        for (let i = 0; i < this.ywval.length; i++) {
-          let ywfwValue = this.ywval[i][0]+'-'+this.ywval[i][1];
-          console.log(ywfwValue)
-        }
+        this.ywfw[0].model = [];
         for (let i = 0; i < currentVal.length; i++) {
           let ywfwValue = currentVal[i][0]+'-'+currentVal[i][1];
           this.ywfw[0].model.push(ywfwValue);
