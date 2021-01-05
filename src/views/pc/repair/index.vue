@@ -328,8 +328,7 @@
                 v-for="item of jdrData"
                 :key="item.ybid"
                 :label="item.xm"
-                :value="item.ybid"
-              @click="getOptimalJdrList(scope.row)">
+                :value="item.ybid">
               </el-option>
             </el-select>
           </el-form-item>
@@ -372,7 +371,7 @@
           <el-form-item label="评价星级" prop="pjvalue">
             <el-rate
               v-model="modifyParams.pjvalue"
-              :disabled="modifyParams.state !== 4"
+              :disabled="modifyParams.state !== 6"
               show-text
               :max="evaluate.length"
               :texts="evaluate"
