@@ -14,6 +14,14 @@ export function getJdr() {
   })
 }
 
+export function getOptimalJdr(data) {
+  return request({
+    url: '/AdminServlet',
+    method: 'post',
+    data
+  })
+}
+
 /**
  * 获取审核员列表
  * { op: 'selallshy' }
