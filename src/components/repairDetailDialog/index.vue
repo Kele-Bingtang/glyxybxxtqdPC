@@ -13,7 +13,7 @@
         <!-- 报修单二维码 -->
         <el-form-item class="qrcode-form-item" label-width="0px">
           <div class="qrcode" id="qrcode"></div>
-          <div class="qrcode-text">扫码查看维修详情</div>
+          <div class="qrcode-text" style="word-break: keep-all">请使用<span style="color: red">微信</span>扫码查看维修详情</div>
           <div style="word-break: keep-all"><span>二维码张贴地址：{{ info.ewmdd }}</span></div>
         </el-form-item>
 
