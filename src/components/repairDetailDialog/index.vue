@@ -14,7 +14,7 @@
         <el-form-item class="qrcode-form-item" label-width="0px">
           <div class="qrcode" id="qrcode"></div>
           <div class="qrcode-text">扫码查看维修详情</div>
-          <span>二维码张贴地址：{{ info.ewmdd }}</span>
+          <div style="word-break: keep-all"><span>二维码张贴地址：{{ info.ewmdd }}</span></div>
         </el-form-item>
 
         <!-- 报修单进度 -->
