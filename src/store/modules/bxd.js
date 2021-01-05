@@ -15,7 +15,7 @@ const actions = {
   getDeclare({ commit }) {
     return new Promise((resolve, reject) => {
       getDeclareOrder().then(response => {
-        const { count } = response.obj.count;
+        const  count  = response.obj.count;
         commit('SET_COUNT', count)
         resolve()
       }).catch(error => {
