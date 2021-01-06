@@ -364,7 +364,7 @@
           </el-form-item>
           <!--工单状态为2（已维修）-->
           <el-form-item label="维修工时" prop="gs">
-            <el-input-number v-model="modifyParams.gs" :precision="2" :step="0.1" :min="0"
+            <el-input-number v-model="modifyParams.gs" :precision="2" :step="0.01" :min="0"
                              :disabled="modifyParams.state !== 2 && modifyParams.state !== 4"></el-input-number>
           </el-form-item>
           <!--工单状态为4（已验收）才有评价，维修中和已撤回应该是没有评价的-->

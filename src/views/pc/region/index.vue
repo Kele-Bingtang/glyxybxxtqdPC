@@ -36,7 +36,7 @@
       </el-button>
     </div>
 
-    <div class="main-content" ref="mainContent" @mousewheel="onMousewheel($event)" style="height: 100%">
+    <div class="main-content" ref="mainContent" @mousewheel="onMousewheel($event)" style="height: 100%; width: 100%">
       <div style="position: relative;width: 100%;height: 100%;">
         <div class="image-tips">
           <!--<el-tag type="primary" style="margin-left: 15px;">-->
