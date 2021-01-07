@@ -325,7 +325,7 @@
                        :disabled="modifyParams.state !== 0 && modifyParams.state !== 1"
             >
               <el-option
-                v-for="item of jdrData"
+                v-for="item of optimalJdrData"
                 :key="item.ybid"
                 :label="item.xm"
                 :value="item.ybid">
@@ -478,7 +478,7 @@
         },
         getOptimalJdrParam: {
           op: "selOptimaljdrPC",
-          bxlb: ''
+          bid: ''
         },
         bxdId: null, // 报修单id
         jdrSearchVal: '', // 搜索关键词
@@ -579,20 +579,7 @@
           }
         })
       },
-      /**
-       * 获取合适当前订单的接单人列表
-       */
-      getOptimalJdrList(row) {
-        alert(row.bxlb);
-        this.getOptimalJdrParam.bxlb = row.bxlb;
-        getOptimalJdr(this.getOptimalJdrParam).then(res => {
-          if (res.obj.jlist) {
-            this.optimalJdrData = res.obj.jlist
-          } else {
-            message(res)
-          }
-        })
-      },
+
       /**
        * 获取审核员列表
        */
@@ -633,7 +620,17 @@
        * @param row
        */
       onModifyOrder(row) {
-        console.log(row);
+        /**
+         * 获取合适当前订单的接单人列表
+         */
+        this.getOptimalJdrParam.bid = row.id;
+          getOptimalJdr(this.getOptimalJdrParam).then(res => {
+            if (res.obj.jlist) {
+              this.optimalJdrData = res.obj.jlist
+            } else {
+              message(res)
+            }
+          })
         this.dialogVisibleModify = true
         this.modifyParams['bid'] = row.id
         this.modifyParams['jid'] = row.jid
