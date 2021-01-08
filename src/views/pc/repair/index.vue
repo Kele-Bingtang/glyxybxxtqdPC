@@ -86,7 +86,9 @@
         <el-button type="success" icon="el-icon-search" @click="handleSearchAll">查询全部</el-button>
       </div>
       <div class="main-header-item" style="width: 130px;">
-        <el-tag type="danger">*某一项若不选择参数则默认查询该项所有数据</el-tag>
+        <el-tag type="danger">*某一项若不选择参数则默认查询该项所有数据
+        <el-tag type="info" style="margin-right: -11px; margin-top: -2px">*若需要导出报修单，请查看报修单详情点击导出按钮导出(报修单只有为已验收状态才能导出)</el-tag>
+        </el-tag>
       </div>
     </div>
     <div class="main-content" id="main-content" ref="main-content">

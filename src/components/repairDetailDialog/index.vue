@@ -170,7 +170,8 @@
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-      <el-button type="primary" plain @click="handleClose">关 闭</el-button>
+        <el-button type="success" :disabled="info.state !== 4" plain @click="handleExport">导 出</el-button>
+        <el-button type="primary" plain @click="handleClose">关 闭</el-button>
     </span>
 
     </el-dialog>
@@ -198,6 +199,7 @@
   import config from '@/config'
   import QRCode from 'qrcodejs2' // 二维码插件
   import { mapGetters } from 'vuex'
+  import {exportXlsx} from '@/api/exportXlsx'
 
   export default {
     name: 'RepairDetailDialog',
@@ -453,6 +455,9 @@
       getShState(state) {
         let v = this.shState.filter(v => v.value === Number(state))[0]
         return v
+      },
+      handleExport() {
+        exportXlsx(this.info.id)
       }
     }
   }

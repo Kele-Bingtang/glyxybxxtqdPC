@@ -1,5 +1,5 @@
 <template>
-  <div class="main pad10">
+  <div class="main pad10" style="width: 100%; height: 100%">
     <div class="main-header" ref="mainHeader">
       <span class="title">校区</span>
       <el-select v-model="xq" clearable placeholder="请选择校区" :disabled="showType === 'qrcode'"
