@@ -60,10 +60,29 @@ export default {
     }
   },
   methods: {
+    exitFullscreen(){
+      if(document.exitFullScreen){
+        document.exitFullscreen()
+      }
+//     		//兼容火狐
+//     		console.log(document.mozExitFullScreen)
+      if(document.mozCancelFullScreen){
+        document.mozCancelFullScreen()
+      }
+//     		//兼容谷歌等
+      if(document.webkitExitFullscreen){
+        document.webkitExitFullscreen()
+      }
+//     		//兼容IE
+      if(document.msExitFullscreen){
+        document.msExitFullscreen()
+      }
+    },
     async logout() {
       this.$store.dispatch('bxd/clearDeclare')
       await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`);
+      this.exitFullscreen();
     },
     handleCommand(val) {
       if (val === 'logout') {

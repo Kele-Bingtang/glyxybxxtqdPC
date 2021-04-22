@@ -1,6 +1,6 @@
 export default {
   // 区域二维码地址
-  // qrcode: 'http://yiban.glmc.edu.cn/bx/eid=', // 某区域的某个地方的二维码id
+  qrcode: 'http://yiban.glmc.edu.cn/bx?eid=', // 某区域的某个地方的二维码id
   // 图片地址
   // bxdimg: 'http://yiban.gxun.edu.cn/bx/bxdimg/',
 

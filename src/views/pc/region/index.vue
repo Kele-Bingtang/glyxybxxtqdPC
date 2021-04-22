@@ -22,6 +22,7 @@
           </el-option>
         </el-select>
       </template>
+
       <el-button v-if="showType === 'img' || showType === 'qrcode'" type="primary" icon="el-icon-search"
                  @click="getQrcode(qy)">查看二维码
       </el-button>
@@ -34,6 +35,9 @@
       <el-button v-if="showType === 'qrcode' || showType === 'area'" class="fr" type="primary" plain icon="el-icon-back"
                  @click="handleBack">返回
       </el-button>
+<!--      <el-button v-if="showType === 'qrcode' || showType === 'area'"  type="primary" plain icon="el-icon-download"-->
+<!--                 @click="downloadQrcodes">导出所有二维码-->
+<!--      </el-button>-->
     </div>
 
     <div class="main-content" ref="mainContent" @mousewheel="onMousewheel($event)" style="height: 100%; width: 100%">
@@ -65,7 +69,7 @@
             v-for="(item, index) in regionMap"
             :key="index"
             class="mark-item"
-            :style="{ left: item.x + 'px', top: item.y + 'px'}">
+            :style="{ left: (item.x -3)+ 'px', top: (item.y-3) + 'px'}">
             <el-popover
               placement="top"
               trigger="manual"
@@ -101,8 +105,8 @@
                 <!--<p class="marker">{{item.countb}}</p>
                 <p class="name">{{item.qy}}</p>-->
                 <p class="marker">
-                  <span class="name">{{item.qy}}</span>
                   <span v-if="item.countb" class="count">{{item.countb}}</span>
+                  <span class="name">{{item.qy}}</span>
                 </p>
               </div>
               <div style="text-align: right; margin-top: 5px;">
@@ -400,6 +404,8 @@
 </template>
 
 <script>
+  import JSZip from 'jszip';//压缩文件
+  import FileSaver from 'file-saver';//生成文件
   import { AdminServlet, getRegion, getBxdDetail } from '@/api/qygl'
   import { getDeclare } from '@/api/bxd';
   import { copyObj, message } from '@/utils/common'
@@ -449,7 +455,7 @@
       return {
         switchAutoMonior: true, // 自动监控
         timer: null, // 定时器
-
+        baseurl:config.qrcode,
         campus: config.campus, // 校区
         region: [], // 区域
         regionMap: [], // 地图上的区域，需要过滤掉blist=0的区域
@@ -556,12 +562,33 @@
       this.queryData()
       this.showType === 'img' && this.onDrag()
       this.setMainContentWidth()
-      this.autoMonitor()
+      this.autoMonitor();
+      //自动开启全屏模式
+      this.autoFullScreen();
     },
     activated() {
       this.autoMonitor()
     },
     methods: {
+
+      autoFullScreen(){
+        if(document.documentElement.RequestFullScreen){
+          document.documentElement.RequestFullScreen();
+        }
+        //兼容火狐
+        console.log(document.documentElement.mozRequestFullScreen)
+        if(document.documentElement.mozRequestFullScreen){
+          document.documentElement.mozRequestFullScreen();
+        }
+        //兼容谷歌等可以webkitRequestFullScreen也可以webkitRequestFullscreen
+        if(document.documentElement.webkitRequestFullScreen){
+          document.documentElement.webkitRequestFullScreen();
+        }
+        //兼容IE,只能写msRequestFullscreen
+        if(document.documentElement.msRequestFullscreen){
+          document.documentElement.msRequestFullscreen();
+        }
+      },
       /**
        * 自动监控，每隔n秒刷新一次数据
        */
@@ -677,8 +704,8 @@
               // v.qy = '1号宿舍'
               // v.b.forEach(k => k.xxdd = '1号宿舍25栋5楼303房')
 
-              // return v && v.countb
-              return v && v.countb
+              // return v
+              return v && v.countb; //过滤，显示只有报修单的区域
             })
           } else {
             this.$message.error('区域接口异常')
@@ -759,6 +786,88 @@
        */
       handleCampusChange(val) {
         this.getRegion(val)
+      },
+      /**
+       * 导出所有二维码
+       */
+      downloadQrcodes(){
+        let address = [];
+        let  qrcode = this.baseurl;
+        if (this.region.length > 0) {
+          let urls = [];
+          for (let i = 0; i < this.region.length; i++) {
+            let a = {
+              fileUrl: qrcode + this.region[i].id,
+              // fileUrl: 'https://pics7.baidu.com/feed/a8773912b31bb051fb37de05c78e64b24bede083.jpeg?token=f02d22e51399a01c6c239e6247cec44f',
+              renameFileName: (i+1)+ '_' +this.region[i].xq + '_'+ this.region[i].qy  + '.jpg'
+            }
+            urls.push(a)
+          }
+          console.log("所有选中数据的url: ", urls);
+          this.filesToRar(urls);
+        } else {
+          this.$message.error('当前无数据!');
+        }
+      },
+      /**
+       * 文件打包
+       * filename 压缩包名
+       * @param arrImages 文件list: [{fileUrl:文件url, renameFileName:文件名}]
+       */
+      filesToRar(arrImages) {
+        let that = this;
+        let zip = new JSZip();
+        let cache = {};
+        let promises = [];
+        this.$message('正在加载压缩文件！');
+
+        for (let item of arrImages) {
+          // 下载文件, 并存成 ArrayBuffer对象(blob)
+          const promise = that.getImgArrayBuffer(item.fileUrl)
+            .then(data => {
+              // 逐个添加文件
+              zip.file(item.renameFileName, data, {
+                binary: true
+              });
+              cache[item.renameFileName] = data;
+            });
+          promises.push(promise);
+        }
+
+        Promise.all(promises).then(() => {
+          zip.generateAsync({
+            type: "blob"
+          }).then(content => {
+            // 生成二进制流
+            // 利用file-saver保存文件 自定义文件名
+            FileSaver.saveAs(content, '区域二维码打包下载');
+            that.$message.success('文件压缩完成！');
+            this.loading = false;
+          });
+        }).catch(res => {
+          that.$message.error('文件压缩失败');
+        });
+      },
+      /**
+       * 获取文件 blob
+       * @param url
+       * @returns {Promise<unknown>}
+       */
+      getImgArrayBuffer(url) {
+        return new Promise((resolve, reject) => {
+          // 通过请求获取文件 blob 格式
+          let xmlhttp = new XMLHttpRequest();
+          xmlhttp.open("GET", url, true);
+          xmlhttp.responseType = "blob";
+          xmlhttp.onload = function() {
+            if (this.status == 200) {
+              resolve(this.response);
+            } else {
+              reject(this.status);
+            }
+          }
+          xmlhttp.send();
+        });
       },
       /**
        * 返回按钮
@@ -958,7 +1067,8 @@
                 // 表格数据
                 this.qrcode = res.obj.ewmlist.map(v => {
                   v['qrcodeid'] = 'qrcode-' + v.id // randomKey()
-                  v['qrcodeurl'] = this.config.qrcode + v.id
+                  // v['qrcodeurl'] = this.config.qrcode + v.id   //修改前的代码
+                  v['qrcodeurl'] = this.baseurl + v.id
                   return v
                 });
                 this.$nextTick(() => {
@@ -1087,7 +1197,7 @@
        * 遮罩，鼠标按下
        */
       onMouseDown() {
-        this.$refs.imageMark.style.background = 'rgba(25, 64, 93, 0.5)'
+        this.$refs.imageMark.style.background = 'rgba(25, 64, 93, 0.5)';
       },
       /**
        * 遮罩，鼠标抬起
@@ -1227,7 +1337,7 @@
             height: 20px;
             color: #000;
             background: #fff;
-            border-radius: 0 20px 20px 0;
+            border-radius: 10px;
             margin: 0;
             display: flex;
             align-items: center;
