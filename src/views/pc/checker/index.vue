@@ -148,7 +148,8 @@
             align="center">
             <template slot-scope="{ row }">
               <span>{{ row.qdsj | dateformat }}</span>
-              <span>{{ row.state == '1'? '(签到)' : '(签退)'}} </span>
+              <el-tag v-if="row.state == '1'" type="success">签到</el-tag>
+              <el-tag v-else type="danger">签退</el-tag>
             </template>
           </el-table-column>
         </el-table>
