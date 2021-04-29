@@ -102,6 +102,7 @@
           align="center"
           width="300">
           <template slot-scope="{ row }">
+            <el-button type="success" size="small" plain @click="getQdb(row)">查看签到表</el-button>
             <el-button
               type="primary"
               size="small"
@@ -219,6 +220,46 @@
       </span>
     </el-dialog>
 
+    <el-dialog
+      :title="dialogQdbTitle"
+      :visible.sync="dialogQdbVisible"
+      class="qdb-dialog"
+      width="900px"
+      top="90px"
+      center
+      append-to-body
+    >
+      <div class="el-dialog-div">
+        <el-table
+          ref="table"
+          :data="qdblist"
+          :height="qdbTableHeight"
+          empty-text="无签到记录"
+          border
+          style="width: 100%">
+          <el-table-column
+            prop="shyid"
+            label="易班id"
+            align="center">
+          </el-table-column>
+          <el-table-column
+            prop="xq"
+            label="签到校区"
+            align="center">
+          </el-table-column>
+          <el-table-column
+            label="签到(退)时间"
+            align="center">
+            <template slot-scope="{ row }">
+              <span>{{ row.qdsj | dateformat }}</span>
+              <span>{{ row.state == '1'? '(签到)' : '(签退)'}} </span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div style="color: #409EFF; font-size: 13px; padding: 10px;">默认查询最近30天签到记录</div>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -232,6 +273,7 @@
   import Pagination from '@/components/Pagination'
   import { mapGetters } from 'vuex'; // 分页插件
   import MyProgress from '@/components/ElProgress/progress'
+  import { AdminServlet } from '@/api/AdminServlet'
   export default {
     name: 'Receiver', // 接单人
     components: { Pagination, MyProgress },
@@ -251,6 +293,16 @@
         dialogVisible: false, // 添加接单人弹窗
         dialogTitle: '', // 弹窗标题
         dialogType: '', // 添加或修改
+        qdblist: [], // 签到表数据
+        dialogQdbTitle: '',//签到表标题
+        dialogQdbVisible: false,//签到表显示
+        qdbTableHeight: 700,
+        // 签到表参数
+        qdbParams: {
+          op: 'selqdb', // 调用方法*，固定值
+          shyid: '', // 审核员易班id*
+          num: '' // 查询天数，不填则默认查询最近30天的签到情况
+        },
         ywfw: [
           { text: '临桂校区', value: 0, model: [], select: [] },
           { text: '东城校区', value: 1, model: [], select: [] }
@@ -598,6 +650,25 @@
       clearFilter() {
         this.$refs.jdrTable.clearFilter()
       },
+      /**
+       * 读取签到表
+       */
+      getQdb(row) {
+        const { xm, gh, ybid } = row;
+        this.dialogQdbVisible = true;
+        this.dialogQdbTitle = `${xm}(${gh}) -- 签到表`;
+        this.qdbParams['shyid'] = ybid
+        let params = this.filterParams(this.qdbParams);
+        this.$nextTick(() => {
+          AdminServlet(params).then(res => {
+            if (res.obj.qdblist) {
+              this.qdblist = res.obj.qdblist
+            } else {
+              message(res)
+            }
+          })
+        });
+    },
       /**
        * 修改接单人职务状态
        */
