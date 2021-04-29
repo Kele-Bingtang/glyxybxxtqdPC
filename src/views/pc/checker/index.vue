@@ -144,10 +144,11 @@
             align="center">
           </el-table-column>
           <el-table-column
-            label="签到时间"
+            label="签到(退)时间"
             align="center">
             <template slot-scope="{ row }">
               <span>{{ row.qdsj | dateformat }}</span>
+              <span>{{ row.state == '1'? '(签到)' : '(签退)'}} </span>
             </template>
           </el-table-column>
         </el-table>
@@ -174,7 +175,6 @@
       return {
         switchAutoMonior: true, // 自动监控
         timer: null, // 定时器
-
         loading: false, // 表格数据加载状态
         tableHeight: null, // 表格高度
         jdrData: [], // 接单人, 表格数据
