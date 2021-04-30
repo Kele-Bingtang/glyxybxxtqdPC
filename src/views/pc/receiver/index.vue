@@ -84,7 +84,7 @@
             align="center"
         >
           <template slot-scope="{ row }">
-            <my-progress v-if="row.gs || row.gs == 0" :percentage="((2 - row.gs) / 2) * 100" :color="customColors" :format="format(row.gs)"></my-progress>
+            <my-progress v-if="row.gs || row.gs == 0" :percentage="((12 - Number(row.gs)) / 12) * 100" :color="customColors" :format="format(row.gs)"></my-progress>
           </template>
         </el-table-column>
         <el-table-column
@@ -455,15 +455,16 @@
         this.loading = true
         getJdr().then(response => {
           this.loading = false
-          this.jdrData = response.obj.jlist
+          this.jdrData = response.obj.jlist;
           this.jdrData.forEach(v => {
             JdrServlet({
               op: 'selgs',
               ybid: v.ybid
             }).then(res => {
-              this.$set(v, 'gs', res.obj & res.obj.gs)
+              // this.$set(v, 'gs', res.obj & res.obj.gs);
+              this.$set(v, 'gs', res.obj.gs);
             })
-          })
+          });
           if (refresh) {
             this.$message.success('刷新成功')
           }
@@ -753,7 +754,7 @@
       // },
       format(gs) {
         let multiplier = 100
-        let sygs = (2 * multiplier - gs * multiplier) / 100 // ×100 防止精度丢失
+        let sygs = (12 * multiplier - gs * multiplier) / 100 // ×100 防止精度丢失
         return `${sygs}`;
       }
     },

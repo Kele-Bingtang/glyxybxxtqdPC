@@ -76,7 +76,7 @@
             <p class="hcStyle" v-bind:key="i" v-if="info.hc != '' " v-for="(item, i) in info.hc.trim().split(',')" style="margin-top: -3px">{{i+1}}、{{item}}</p>
           </el-form-item>
           <br>
-          <el-form-item label="工时:">
+          <el-form-item label="工时(小时):">
             <span>{{ info.gs }}</span>
           </el-form-item>
           <el-form-item label="相关图片:" class="tp-form-item">
