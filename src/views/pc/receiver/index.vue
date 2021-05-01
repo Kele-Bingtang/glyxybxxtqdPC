@@ -80,7 +80,7 @@
         </el-table-column>
         <el-table-column
             prop="gs"
-            label="剩余工时"
+            label="剩余工时(小时)"
             align="center"
         >
           <template slot-scope="{ row }">
