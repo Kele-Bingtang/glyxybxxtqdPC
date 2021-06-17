@@ -73,7 +73,7 @@
           </el-form-item>
           <br>
           <el-form-item label="耗材:" class="hc-item-style">
-            <p class="hcStyle" v-bind:key="i" v-if="info.hc != '' " v-for="(item, i) in info.hc.trim().split('¥')" style="margin-top: -3px">{{i+1}}、{{item}}</p>
+            <p class="hcStyle" v-bind:key="i" v-if="info.hc != '' " v-for="(item, i) in info.hc.trim().split('=')" style="margin-top: -3px">{{i+1}}、{{item}}</p>
           </el-form-item>
           <br>
           <el-form-item label="工时(小时):">
