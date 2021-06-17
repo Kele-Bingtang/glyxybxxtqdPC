@@ -98,7 +98,7 @@
 
             <el-popconfirm
                 title="确定删除吗？"
-                @confirm="handleHcDelete"
+                @onConfirm="handleHcDelete"
             >
               <el-button
                   type="danger"
