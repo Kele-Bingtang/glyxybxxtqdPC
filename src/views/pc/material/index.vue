@@ -35,18 +35,18 @@
           align="center"
         >
         </el-table-column>
-        <el-table-column
-          prop="xh"
-          label="型号"
-          align="center"
-        >
-        </el-table-column>
-        <!--<el-table-column
-          prop="id"
-          label="编号"
-          align="center"
-        >
-        </el-table-column>-->
+<!--        <el-table-column-->
+<!--          prop="xh"-->
+<!--          label="型号"-->
+<!--          align="center"-->
+<!--        >-->
+<!--        </el-table-column>-->
+<!--        <el-table-column-->
+<!--          prop="id"-->
+<!--          label="编号"-->
+<!--          align="center"-->
+<!--        >-->
+<!--        </el-table-column>-->
         <el-table-column
           prop="jg"
           label="单价"
@@ -136,12 +136,24 @@
     >
       <div class="el-dialog-div">
         <el-form :model="params" :rules="rules" ref="ruleForm" label-position="left" label-width="100px">
+<!--          <el-form-item label="耗材类别" prop="lb">-->
+<!--            <el-cascader-->
+<!--              class="cascader-bxlb"-->
+<!--              placeholder="选择耗材类别"-->
+<!--              @change="hclbChange"-->
+<!--              :options="options"-->
+<!--              filterable-->
+<!--              clearable-->
+<!--            ></el-cascader>-->
+<!--          </el-form-item>-->
           <el-form-item label="耗材类别" prop="lb">
             <el-cascader
+              v-model="hclbval"
               class="cascader-bxlb"
               placeholder="选择耗材类别"
-              @change="hclbChange"
-              :options="options"
+              :props="{ expandTrigger: 'hover' }"
+              @change="hclbOptionChange"
+              :options="hclbOptions"
               filterable
               clearable
             ></el-cascader>
@@ -159,9 +171,9 @@
           <el-form-item label="单位" prop="dw">
             <el-input v-model="params.dw"></el-input>
           </el-form-item>
-          <el-form-item label="型号" prop="xh">
-            <el-input v-model="params.xh"></el-input>
-          </el-form-item>
+<!--          <el-form-item label="型号" prop="xh">-->
+<!--            <el-input v-model="params.xh"></el-input>-->
+<!--          </el-form-item>-->
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -182,13 +194,25 @@
     >
       <div class="el-dialog-div">
         <el-form :model="paramsUpdate" :rules="rules" ref="ruleForm" label-position="left" label-width="100px">
+<!--          <el-form-item label="耗材类别" prop="lb">-->
+<!--            <el-cascader-->
+<!--              v-model="hclbval"-->
+<!--              class="cascader-bxlb"-->
+<!--              placeholder="选择耗材类别"-->
+<!--              @change="hclbUpdate"-->
+<!--              :options="options"-->
+<!--              filterable-->
+<!--              clearable-->
+<!--            ></el-cascader>-->
+<!--          </el-form-item>-->
           <el-form-item label="耗材类别" prop="lb">
             <el-cascader
               v-model="hclbval"
               class="cascader-bxlb"
               placeholder="选择耗材类别"
-              @change="hclbUpdate"
-              :options="options"
+              :props="{ expandTrigger: 'hover' }"
+              @change="hclbUpdateOptionChange"
+              :options="hclbOptions"
               filterable
               clearable
             ></el-cascader>
@@ -205,9 +229,9 @@
           <el-form-item label="单位" prop="dw">
             <el-input v-model="paramsUpdate.dw"></el-input>
           </el-form-item>
-          <el-form-item label="型号" prop="xh">
-            <el-input v-model="paramsUpdate.xh"></el-input>
-          </el-form-item>
+<!--          <el-form-item label="型号" prop="xh">-->
+<!--            <el-input v-model="paramsUpdate.xh"></el-input>-->
+<!--          </el-form-item>-->
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -348,6 +372,102 @@ export default {
       }
     }
     return {
+      //耗材级别
+      hclbOptions: [{
+        value: '1',
+        label: '安装 ',
+        children: [{
+          value: '1',
+          label: '电气设备安装工程-通用'
+        }, {
+          value: '2',
+          label: '电气设备安装工程-明装'
+        }, {
+          value: '3',
+          label: '电气设备安装工程-暗装'
+        }, {
+          value: '4',
+          label: '给排水、燃气工程'
+        }]
+      },{
+        value: '2',
+        label: '安装拆除 ',
+        children: [{
+          value: '1',
+          label: '变配电及低压电器拆除'
+        }, {
+          value: '2',
+          label: '给排水、燃气工程拆除'
+        }, {
+          value: '3',
+          label: '消防工程拆除'
+        }]
+      },{
+        value: '3',
+        label: '拆除 ',
+        children: [{
+          value: '1',
+          label: '人工拆除工程'
+        }, {
+          value: '2',
+          label: '机械拆除工程'
+        }]},{
+        value: '4',
+        label: '建筑',
+        children: [{
+          value: '1',
+          label: '土（石）方工程'
+        }, {
+          value: '2',
+          label: '砌筑工程'
+        }, {
+          value: '3',
+          label: '屋面及防水工程'
+        }, {
+          value: '4',
+          label: '保温、隔热、防腐工程'
+        }, {
+          value: '5',
+          label: '垃圾外运'
+        }, {
+          value: '6',
+          label: '脚手架工程'
+        }, {
+          value: '7',
+          label: '混凝土模板及支架(撑)'
+        }, {
+          value: '8',
+          label: '特殊项目及机械台班'
+        }]
+      },{
+        value: '5',
+        label: '市政',
+        children: [{
+          value: '1',
+          label: '市政'
+        }, {
+          value: '2',
+          label: '楼地面工程'
+        }, {
+          value: '3',
+          label: '墙、柱面工程'
+        }, {
+          value: '4',
+          label: '天棚工程'
+        }, {
+          value: '5',
+          label: '油漆、涂料、裱糊工程'
+        }, {
+          value: '6',
+          label: '其他装饰工程'
+        }, {
+          value: '7',
+          label: '门窗工程'
+        }, {
+          value: '8',
+          label: '玻璃价格调差'
+        }]
+      }],
       hclbval:[],//耗材类别
       options: [],
       loading: false, // 表格数据加载状态
@@ -443,23 +563,47 @@ export default {
   mounted() {
     this.tableHeight = this.$refs['main-content'].offsetHeight
     this.getHcList()
-    this.initDict();
+    // this.initDict();
   },
   methods: {
     //初始化耗材类别
-    initDict(){
-      DictListServlet().then(response => {
-        this.options = response.obj;
-      }).catch(() => {
-        this.$message.error('查询耗材类别出错')
-      })
+    // initDict(){
+    //   DictListServlet().then(response => {
+    //     this.options = response.obj;
+    //   }).catch(() => {
+    //     this.$message.error('查询耗材类别出错')
+    //   })
+    // },
+    /**
+     * 获取耗材级联选择数据
+     */
+    hclbOptionChange(currentVal){
+      if (currentVal.length !== 0){
+        //耗材类别第一级
+        this.params.lb = currentVal[0];
+        // 耗材类别第二级
+        this.params.xh = currentVal[1];
+      }
+    },
+    //耗材 类别修改
+    hclbUpdateOptionChange(currentVal){
+      if (currentVal.length !== 0){
+        //耗材类别第一级
+        this.paramsUpdate.lb = currentVal[0];
+        // 耗材类别第二级
+        this.paramsUpdate.xh = currentVal[1];
+      }
     },
     //添加耗材
     hclbChange(currentVal){
       if (currentVal.length == 0) {
         this.params.lb = '';
       } else {
-        this.params.lb = currentVal[0]+'-'+currentVal[1];
+        // this.params.lb = currentVal[0]+'-'+currentVal[1];
+        //耗材类别第一级
+        this.params.lb = currentVal[0];
+        // 耗材类别第二级
+        this.params.xh = currentVal[1];
       }
     },
     //修改耗材
@@ -571,10 +715,15 @@ export default {
       this.paramsUpdate.dw = row.dw
       this.paramsUpdate.xh = row.xh
       this.paramsUpdate.lb = row.lb
-      this.hclbval = this.paramsUpdate.lb.split('-')
+      // this.hclbval = this.paramsUpdate.lb.split('-')
+      //回显耗材类别
+      let hclbArr = [row.lb,row.xh]
+      this.hclbval = hclbArr;
     },
     hcUDelete(row) {
       this.paramsDelete.id = row.id
+      console.log('delete222============')
+      console.log(this.paramsDelete)
     },
     /**
      * 新增耗材，传递后台
