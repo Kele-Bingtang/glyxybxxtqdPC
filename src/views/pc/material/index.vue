@@ -768,8 +768,6 @@ export default {
      * 删除耗材
      */
     handleHcDelete() {
-      console.log('delete============')
-      console.log(this.paramsDelete)
       HcServlet(this.paramsDelete).then(() => {
         this.$message.success('删除成功')
         this.refreshHc()
