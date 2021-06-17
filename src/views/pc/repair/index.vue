@@ -640,7 +640,13 @@
         this.modifyParams['shy2'] = row.shy2
         this.modifyParams['pjvalue'] = row.pj ? Number(row.pj) : 0
         this.modifyParams['pjnr'] = row.pjnr
-        this.modifyParams['hc'] = row.hc
+        //修改耗材数据回显
+        let hcArr = row.hc.trim().split('=');
+        let hcstr = "";
+        for (let i = 0; i <hcArr.length ; i++) {
+          hcstr += (i+1) + "、" +hcArr[i] + "  ";
+        }
+        this.modifyParams['hc'] = hcstr;
         this.modifyParams['gs'] = Number(row.gs)
         this.modifyParams['state'] = Number(row.state)
         // })
