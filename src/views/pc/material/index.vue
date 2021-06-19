@@ -373,7 +373,15 @@ export default {
     }
     return {
       //耗材级别
-      hclbOptions: [{
+      hclbOptions: [
+        {
+          value: '0',
+          label: '无需耗材 ',
+          children: [{
+            value: '0',
+            label: '无需耗材'
+          }]
+        },{
         value: '1',
         label: '安装 ',
         children: [{
