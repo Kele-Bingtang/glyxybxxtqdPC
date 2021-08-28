@@ -56,7 +56,7 @@
           <el-form-item label="区 域:">
             <span>{{ info.qy }}</span>
           </el-form-item>
-          <el-form-item label="详细地址:">
+          <el-form-item label="报修位置:">
             <span>{{ info.xxdd }}</span>
           </el-form-item>
           <el-form-item label="报修类别:">
