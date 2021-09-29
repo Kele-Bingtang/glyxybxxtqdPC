@@ -419,7 +419,11 @@ export default {
         }, {
           value: '2',
           label: '机械拆除工程'
-        }]},{
+        }, {
+          value: '3',
+          label: '其他项目'
+        }
+        ]},{
         value: '4',
         label: '建筑',
         children: [{
@@ -436,13 +440,13 @@ export default {
           label: '保温、隔热、防腐工程'
         }, {
           value: '5',
-          label: '垃圾外运'
-        }, {
-          value: '6',
           label: '脚手架工程'
         }, {
-          value: '7',
+          value: '6',
           label: '混凝土模板及支架(撑)'
+        }, {
+          value: '7',
+          label: '其他项目'
         }, {
           value: '8',
           label: '特殊项目及机械台班'
