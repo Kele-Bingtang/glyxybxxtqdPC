@@ -15,7 +15,7 @@ module.exports = {
   publicPath: '',
 
   // 指定生产环境目录
-  outputDir: 'dist',
+  outputDir: 'bxht',
 
   // 指定生成静态资源的生成目录
   assetsDir: 'static',
